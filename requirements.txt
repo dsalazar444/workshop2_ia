@@ -7,3 +7,4 @@ pyarrow
 transformers
 matplotlib
 seaborn
+scipy
