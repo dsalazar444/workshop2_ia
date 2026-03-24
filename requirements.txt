@@ -9,3 +9,5 @@ matplotlib
 seaborn
 scipy
 kagglehub
+torch
+torchvision
