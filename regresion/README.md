@@ -24,20 +24,23 @@ El notebook `problema2_eda.ipynb` tambien puede intentar descargar el dataset au
 Se creó una carpeta llamada `dataset/` donde se almacenan las imágenes originales del dataset.  
 Dentro de esta carpeta se deben ubicar las subcarpetas:
 
+<pre>
 dataset/
 ├── part1/
 ├── part2/
 ├── part3/
+</pre>
 
 Estas carpetas contienen las imágenes originales en formato UTKFace.
 
 Posteriormente, se utilizó el notebook `data_split.ipynb` para realizar la división del dataset en los conjuntos de entrenamiento, validación y prueba. Este proceso toma las imágenes de `part1`, `part2` y `part3`, y las organiza automáticamente en la siguiente estructura:
 
+```
 dataset/
 ├── train/
 ├── val/
 ├── test/
-
+```
 
 Es importante mantener la estructura de `part1`, `part2` y `part3` antes de ejecutar el notebook, ya que de ello depende que la división se realice correctamente.
 
