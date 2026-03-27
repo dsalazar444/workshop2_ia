@@ -90,12 +90,43 @@ El dataset utilizado es **UTKFace**, un conjunto de más de 20.000 imágenes fac
 
 ```
 workshop2_ia/
+└── clasificacion/
+    ├── clasificacion.ipynb
 └── regresion/
     ├── regresion.ipynb
-    └── UTKFace/          ← carpeta con las imágenes .jpg
+    ├── regresion_eda.ipynb    ← Análisis Exploratorio de Datos del problema
+    ├── data_split.ipynb       ← ⚠️ EJECUTAR PRIMERO
+    ├── data/                  ← carpeta con las imágenes .jpg (extraídas)
+    │   ├── part1/
+    │   ├── part2/
+    │   └── part3/
+    └── dataset/               ← se crea automáticamente tras ejecutar data_split.ipynb
+        ├── train/             (70% de imágenes)
+        ├── val/               (15% de imágenes)
+        └── test/              (15% de imágenes)
 ```
 
 > **Nota:** El dataset es de uso exclusivo para investigación no comercial, según los términos de licencia de UTKFace.
+
+**⚠️ Paso obligatorio: Dividir el dataset**
+
+Antes de ejecutar `regresion.ipynb`, **debes ejecutar** `data_split.ipynb` para dividir las imágenes en carpetas de train, val y test:
+
+```bash
+jupyter notebook regresion/data_split.ipynb
+# Ejecutar todas las celdas → genera dataset/ con subdirectorios train/, val/, test/
+```
+
+Este notebook:
+- Lee todas las imágenes de `data/part1/`, `data/part2/`, `data/part3/`
+- Crea las carpetas `dataset/train/`, `dataset/val/`, `dataset/test/`
+- Distribuye las imágenes respetando el balance de clases
+- Guarda un log en `split_log.csv` con la asignación de cada imagen
+
+**Orden de ejecución obligatorio:**
+
+1. ✅ `data_split.ipynb` — crear dataset/train, dataset/val, dataset/test
+2. ✅ `regresion.ipynb` — EDA + entrenamiento CNN
 
 ---
 
@@ -107,12 +138,37 @@ jupyter notebook
 jupyter lab
 ```
 
-Abrir y ejecutar los notebooks en orden:
+### Problema 1 — Clasificación (Fatiga Muscular)
 
-1. `clasificacion/clasificacion.ipynb`
-2. `regresion/regresion.ipynb`
+Abrir y ejecutar:
 
-> Cada notebook está diseñado para ejecutarse de principio a fin de forma secuencial. Se recomienda usar **GPU** para el notebook de regresión (entrenamiento CNN).
+```
+jupyter notebook problema1.ipynb
+```
+
+El notebook descarga automáticamente el dataset de HuggingFace. Ejecutar todas las celdas en orden secuencial.
+
+### Problema 2 — Regresión (Estimación de Edad)
+
+**⚠️ IMPORTANTE: Orden de ejecución**
+
+1. **Primero:** Ejecutar `data_split.ipynb` para dividir el dataset:
+```bash
+jupyter notebook regresion/data_split.ipynb
+# Ejecutar todas las celdas
+# ✓ Se crean las carpetas: dataset/train/, dataset/val/, dataset/test/
+# ✓ Se genera split_log.csv con el historial de la división
+```
+
+2. **Segundo:** Ejecutar `regresion.ipynb` para EDA y entrenamiento:
+```bash
+jupyter notebook regresion/regresion.ipynb
+# Ejecutar todas las celdas en orden
+```
+
+> El notebook de regresión espera encontrar las carpetas `dataset/train/`, `dataset/val/` y `dataset/test/` ya creadas. Si las carpetas no existen, el notebook fallará.
+
+> Se recomienda usar **GPU** para el notebook de regresión (entrenamiento CNN es más rápido).
 
 ---
 
@@ -150,31 +206,3 @@ Imágenes faciales etiquetadas con la edad del sujeto. El modelo estima la edad 
 - Métricas: MAE, RMSE, R²
 - Análisis de curvas de entrenamiento/validación (overfitting/underfitting)
 - Prueba con imagen real y análisis de sensibilidad
-
----
-
-## Criterios de Evaluación
-
-### Clasificación
-
-| Criterio | Peso |
-|----------|------|
-| Justificación teórica y análisis preliminar | 20% |
-| Calidad del EDA, feature engineering e interpretaciones | 20% |
-| Preprocesamiento y pipeline | 20% |
-| Implementación, hiperparámetros y comparación de modelos | 25% |
-| Prueba con muestra artificial y análisis | 15% |
-
-### Regresión
-
-| Criterio | Peso |
-|----------|------|
-| Justificación teórica y análisis preliminar | 20% |
-| Calidad del EDA e interpretaciones | 20% |
-| Preprocesamiento y pipeline | 20% |
-| Implementación y evaluación del modelo CNN | 25% |
-| Prueba con muestra artificial y análisis | 15% |
-
----
-
-> **Nota:** Este workshop será sustentado por un miembro del equipo seleccionado aleatoriamente. El entendimiento individual de cada integrante es fundamental.
